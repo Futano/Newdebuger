@@ -1,0 +1,8 @@
+{
+  "run_id": "sample-run-001",
+  "application": "DemoShop",
+  "package_name": "com.example.demoshop",
+  "device": "emulator-sample",
+  "model": "gpt-4o",
+  "mode": "sanitized sample"
+}

@@ -1,0 +1,48 @@
+# Python cache
+__pycache__/
+*.py[cod]
+*$py.class
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+
+# JetBrains IDE
+.idea/
+
+# VS Code local files
+.vscode/
+
+# Claude Code local files
+.claude/
+
+# Local secrets and runtime configuration
+.env
+.env.*
+!.env.example
+
+# Android and runtime outputs
+/app_data/
+/bug_reports/
+/current_pre_recovery/
+/experiment_results/
+/temp_data/
+*.log
+
+# Local worktrees and recovery artifacts
+/.worktrees/
+/recovered_codex_tree/
+/recovered_codex_tree.tar
+*.backup_encoding_fix
+
+# Thesis and paper build outputs
+/thesis/
+/icsme2026-tool-paper/
+*.aux
+*.bbl
+*.blg
+*.fdb_latexmk
+*.fls
+*.out
+*.pdf
+*.toc
+*.xdv

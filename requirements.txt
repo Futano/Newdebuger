@@ -1,0 +1,3 @@
+openai>=1.30.0
+uiautomator2>=3.0.0
+Pillow>=10.0.0

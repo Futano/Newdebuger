@@ -1,0 +1,3 @@
+{"step": 1, "activity": "ProductListActivity", "operation": "click", "widget": "Wireless Mouse", "bug_candidate": false}
+{"step": 2, "activity": "ProductDetailsActivity", "operation": "click", "widget": "Add to cart", "bug_candidate": false}
+{"step": 3, "activity": "ProductListActivity", "operation": "observe", "widget": "Cart badge", "bug_candidate": true}

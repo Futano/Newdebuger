@@ -1,0 +1,22 @@
+{
+  "bug_id": "BUG-SAMPLE-001",
+  "application": "DemoShop",
+  "package_name": "com.example.demoshop",
+  "activity": "com.example.demoshop.CartActivity",
+  "category": "cross-page data inconsistency",
+  "severity": "medium",
+  "confirmed_by_supervisor": true,
+  "summary": "Cart badge remains zero after an item is added, while the cart page contains the item.",
+  "reproduction_steps": [
+    "Open the product list.",
+    "Select the product named Wireless Mouse.",
+    "Tap Add to cart.",
+    "Return to the product list.",
+    "Compare the cart badge with the cart page contents."
+  ],
+  "evidence": {
+    "ui_xml_available": true,
+    "screenshots_included": false,
+    "operation_history_included": true
+  }
+}
