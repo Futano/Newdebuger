@@ -144,33 +144,11 @@
       background: #fafafa;
     }
 
-    svg {
+    .workflow-image {
       display: block;
       width: 100%;
       height: auto;
-    }
-
-    .node {
-      fill: #f1f1f1;
-      stroke: #111827;
-      stroke-width: 2.1;
-    }
-
-    .arrow {
-      fill: none;
-      stroke: #111827;
-      stroke-width: 2.2;
-      marker-end: url(#arrow);
-    }
-
-    .dash {
-      stroke-dasharray: 8 7;
-    }
-
-    .svg-label {
-      font-family: Georgia, "Times New Roman", serif;
-      font-size: 18px;
-      fill: #111827;
+      border: 0;
     }
 
     .caption {
@@ -339,59 +317,7 @@
       <p class="kicker">Workflow</p>
       <h2 id="workflow-title">From GUI state to reviewed reports.</h2>
       <div class="figure">
-        <svg viewBox="0 0 1120 470" role="img" aria-label="GUIdebuger workflow">
-          <defs>
-            <marker id="arrow" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto" markerUnits="strokeWidth">
-              <path d="M0,0 L0,6 L8,3 z" fill="#111827"></path>
-            </marker>
-          </defs>
-          <rect class="node" x="18" y="76" width="174" height="74" rx="5"></rect>
-          <text class="svg-label" x="105" y="106" text-anchor="middle">Android app</text>
-          <text class="svg-label" x="105" y="132" text-anchor="middle">ADB / UIA</text>
-
-          <rect class="node" x="264" y="76" width="190" height="74" rx="5"></rect>
-          <text class="svg-label" x="359" y="106" text-anchor="middle">GUI state</text>
-          <text class="svg-label" x="359" y="132" text-anchor="middle">XML + screenshot</text>
-
-          <rect class="node" x="526" y="76" width="210" height="74" rx="5"></rect>
-          <text class="svg-label" x="631" y="106" text-anchor="middle">Narrative memory</text>
-          <text class="svg-label" x="631" y="132" text-anchor="middle">case events</text>
-
-          <rect class="node" x="814" y="76" width="210" height="74" rx="5"></rect>
-          <text class="svg-label" x="919" y="106" text-anchor="middle">Explorer LLM</text>
-          <text class="svg-label" x="919" y="132" text-anchor="middle">action + oracle</text>
-
-          <rect class="node" x="814" y="244" width="210" height="74" rx="5"></rect>
-          <text class="svg-label" x="919" y="274" text-anchor="middle">Action</text>
-          <text class="svg-label" x="919" y="300" text-anchor="middle">execution</text>
-
-          <rect class="node" x="526" y="370" width="210" height="74" rx="5"></rect>
-          <text class="svg-label" x="631" y="400" text-anchor="middle">Supervisor</text>
-          <text class="svg-label" x="631" y="426" text-anchor="middle">chain review</text>
-
-          <rect class="node" x="172" y="370" width="226" height="74" rx="5"></rect>
-          <text class="svg-label" x="285" y="400" text-anchor="middle">Evidence-chain</text>
-          <text class="svg-label" x="285" y="426" text-anchor="middle">BugReport</text>
-
-          <path class="arrow" d="M192 113 L264 113"></path>
-          <text class="svg-label" x="214" y="102">observe</text>
-          <path class="arrow" d="M454 113 L526 113"></path>
-          <text class="svg-label" x="468" y="102">controls</text>
-          <path class="arrow" d="M736 113 L814 113"></path>
-          <text class="svg-label" x="758" y="102">prompt</text>
-          <path class="arrow" d="M919 150 L919 244"></path>
-          <text class="svg-label" x="932" y="195">action JSON</text>
-          <path class="arrow" d="M814 281 L760 281 L760 150"></path>
-          <text class="svg-label" x="704" y="273">feedback</text>
-          <path class="arrow" d="M919 318 L919 342 L48 342 L48 150"></path>
-          <text class="svg-label" x="414" y="333">device operation</text>
-          <path class="arrow dash" d="M359 150 L359 224 L608 224 L608 370"></path>
-          <text class="svg-label" x="386" y="214">XML + screenshot</text>
-          <path class="arrow dash" d="M814 150 L784 150 L784 348 L716 370"></path>
-          <text class="svg-label" x="728" y="198">bug candidate</text>
-          <path class="arrow" d="M526 407 L398 407"></path>
-          <text class="svg-label" x="414" y="396">confirmed evidence</text>
-        </svg>
+        <img class="workflow-image" src="assets/workflow.png" alt="GUIdebuger workflow diagram showing Android app observation, GUI state, narrative memory, Explorer LLM, action execution, Supervisor chain review, and Evidence-chain BugReport.">
         <p class="caption">
           Deterministic Android automation observes and executes actions; the
           narrative layer stores case events; the Supervisor reviews the
