@@ -5,6 +5,10 @@ running Android application, collects UI XML and screenshots, asks an Explorer
 LLM to choose the next GUI action, reviews candidate defects with a Supervisor
 model, and generates evidence-rich bug reports in Markdown and JSON.
 
+Online demo and artifact viewer: <https://Futano.github.io/Newdebuger/>
+
+Tool screencast: <https://youtu.be/WFu-V8vJABA>
+
 The tool is designed for research and artifact evaluation around mobile app
 maintenance, regression testing, and non-crash GUI defect discovery. It is not a
 drop-in replacement for a human oracle: every generated report should still be
@@ -251,7 +255,8 @@ $OutputEncoding = [Console]::OutputEncoding = [Text.UTF8Encoding]::UTF8
 For a conference artifact package, prepare the following before submission:
 
 - public repository URL;
-- 3-5 minute screencast URL;
+- online demo and artifact viewer URL: <https://Futano.github.io/Newdebuger/>;
+- 3-5 minute screencast URL: <https://youtu.be/WFu-V8vJABA>;
 - short quick-start instructions for live Android mode;
 - sample Markdown and JSON BugReports;
 - screenshot evidence used in the demo;

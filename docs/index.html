@@ -1,0 +1,516 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>GUIdebuger Online Demo</title>
+  <style>
+    :root {
+      color-scheme: light;
+      --ink: #111827;
+      --muted: #4b5563;
+      --line: #1f2937;
+      --paper: #ffffff;
+      --soft: #f3f4f6;
+      --soft-2: #e5e7eb;
+      --accent: #8a5a14;
+      --good: #0f766e;
+      --warn: #b45309;
+      --max: 1120px;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      background: var(--paper);
+      color: var(--ink);
+      font-family: Georgia, "Times New Roman", serif;
+      line-height: 1.55;
+    }
+
+    a {
+      color: #1d4ed8;
+      text-decoration-thickness: 1px;
+      text-underline-offset: 3px;
+    }
+
+    header, main, footer {
+      width: min(var(--max), calc(100% - 32px));
+      margin: 0 auto;
+    }
+
+    header {
+      padding: 48px 0 28px;
+      border-bottom: 2px solid var(--line);
+    }
+
+    .kicker {
+      margin: 0 0 10px;
+      color: var(--accent);
+      font-family: "Courier New", monospace;
+      font-size: 0.82rem;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+    }
+
+    h1 {
+      margin: 0;
+      font-size: clamp(2.2rem, 6vw, 4.6rem);
+      line-height: 0.98;
+      letter-spacing: 0;
+    }
+
+    h2 {
+      margin: 0 0 14px;
+      font-size: clamp(1.35rem, 2.3vw, 2rem);
+      line-height: 1.15;
+      letter-spacing: 0;
+    }
+
+    h3 {
+      margin: 0 0 8px;
+      font-size: 1.08rem;
+      letter-spacing: 0;
+    }
+
+    p {
+      margin: 0 0 14px;
+    }
+
+    .lead {
+      max-width: 820px;
+      margin-top: 18px;
+      color: var(--muted);
+      font-size: clamp(1.02rem, 1.7vw, 1.28rem);
+    }
+
+    .meta {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-top: 24px;
+    }
+
+    .pill {
+      display: inline-flex;
+      align-items: center;
+      min-height: 32px;
+      padding: 5px 10px;
+      border: 1px solid var(--line);
+      background: var(--soft);
+      font-family: "Courier New", monospace;
+      font-size: 0.82rem;
+    }
+
+    main {
+      padding: 28px 0 42px;
+    }
+
+    section {
+      padding: 28px 0;
+      border-bottom: 1px solid var(--soft-2);
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 16px;
+    }
+
+    .two {
+      display: grid;
+      grid-template-columns: minmax(0, 1.1fr) minmax(300px, 0.9fr);
+      gap: 24px;
+      align-items: start;
+    }
+
+    .card {
+      min-height: 150px;
+      padding: 18px;
+      border: 1px solid var(--line);
+      background: var(--soft);
+    }
+
+    .card p {
+      color: var(--muted);
+    }
+
+    .figure {
+      padding: 18px;
+      border: 1px solid var(--line);
+      background: #fafafa;
+    }
+
+    svg {
+      display: block;
+      width: 100%;
+      height: auto;
+    }
+
+    .node {
+      fill: #f1f1f1;
+      stroke: #111827;
+      stroke-width: 2.1;
+    }
+
+    .arrow {
+      fill: none;
+      stroke: #111827;
+      stroke-width: 2.2;
+      marker-end: url(#arrow);
+    }
+
+    .dash {
+      stroke-dasharray: 8 7;
+    }
+
+    .svg-label {
+      font-family: Georgia, "Times New Roman", serif;
+      font-size: 18px;
+      fill: #111827;
+    }
+
+    .caption {
+      margin-top: 12px;
+      color: var(--muted);
+      font-size: 0.95rem;
+    }
+
+    .artifact-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 0.96rem;
+    }
+
+    .artifact-table th,
+    .artifact-table td {
+      padding: 10px 8px;
+      border-bottom: 1px solid var(--soft-2);
+      text-align: left;
+      vertical-align: top;
+    }
+
+    .artifact-table th {
+      color: var(--accent);
+      font-family: "Courier New", monospace;
+      font-size: 0.78rem;
+      letter-spacing: 0.07em;
+      text-transform: uppercase;
+    }
+
+    .event-log {
+      display: grid;
+      gap: 10px;
+      margin-top: 12px;
+    }
+
+    .event {
+      display: grid;
+      grid-template-columns: 92px 1fr;
+      gap: 14px;
+      padding: 12px;
+      border-left: 4px solid var(--line);
+      background: var(--soft);
+    }
+
+    .event strong {
+      font-family: "Courier New", monospace;
+      font-size: 0.86rem;
+    }
+
+    pre {
+      overflow-x: auto;
+      margin: 0;
+      padding: 14px;
+      border: 1px solid var(--line);
+      background: #f8fafc;
+      font-family: "Courier New", monospace;
+      font-size: 0.87rem;
+      line-height: 1.45;
+    }
+
+    .callout {
+      padding: 16px;
+      border: 1px solid var(--line);
+      border-left: 6px solid var(--good);
+      background: #f8fafc;
+    }
+
+    .actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-top: 18px;
+    }
+
+    .button {
+      display: inline-flex;
+      align-items: center;
+      min-height: 40px;
+      padding: 8px 13px;
+      border: 1px solid var(--line);
+      background: var(--ink);
+      color: #ffffff;
+      font-family: "Courier New", monospace;
+      font-size: 0.88rem;
+      text-decoration: none;
+    }
+
+    .button.secondary {
+      background: #ffffff;
+      color: var(--ink);
+    }
+
+    .button.tertiary {
+      background: var(--soft);
+      color: var(--ink);
+    }
+
+    footer {
+      padding: 20px 0 36px;
+      color: var(--muted);
+      font-size: 0.92rem;
+    }
+
+    @media (max-width: 820px) {
+      .grid,
+      .two {
+        grid-template-columns: 1fr;
+      }
+
+      header {
+        padding-top: 34px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <p class="kicker">Online demo and artifact viewer</p>
+    <h1>GUIdebuger</h1>
+    <p class="lead">
+      GUIdebuger is an LLM-assisted Android GUI testing prototype that turns GUI
+      exploration into reviewable case event chains, Supervisor decisions, and
+      evidence-centered BugReports.
+    </p>
+    <div class="meta" aria-label="tool keywords">
+      <span class="pill">Android GUI Testing</span>
+      <span class="pill">Narrative Memory</span>
+      <span class="pill">Supervisor Review</span>
+      <span class="pill">Evidence Chains</span>
+    </div>
+    <div class="actions">
+      <a class="button" href="https://youtu.be/WFu-V8vJABA">Watch screencast</a>
+      <a class="button secondary" href="https://github.com/Futano/Newdebuger">Open repository</a>
+      <a class="button tertiary" href="#artifact-viewer">Inspect artifacts</a>
+    </div>
+  </header>
+
+  <main>
+    <section class="two" aria-labelledby="overview-title">
+      <div>
+        <p class="kicker">Purpose</p>
+        <h2 id="overview-title">A lightweight online version for tool review.</h2>
+        <p>
+          This page is a static online demo for reviewers. It does not run an
+          Android emulator in the browser. Instead, it shows the tool workflow,
+          expected artifacts, and a compact sample trace that mirrors the files
+          produced by a local GUIdebuger run.
+        </p>
+        <p>
+          Live execution still requires a local Android device or emulator, ADB,
+          UIAutomator, Python, and an OpenAI-compatible model endpoint.
+        </p>
+        <div class="actions">
+          <a class="button" href="#artifact-viewer">View demo artifacts</a>
+          <a class="button secondary" href="#local-run">Local run requirements</a>
+        </div>
+      </div>
+      <div class="callout">
+        <h3>What reviewers can inspect here</h3>
+        <p>Functional case event log, narrative memory, Explorer decision, Supervisor review, and final BugReport fields.</p>
+      </div>
+    </section>
+
+    <section aria-labelledby="workflow-title">
+      <p class="kicker">Workflow</p>
+      <h2 id="workflow-title">From GUI state to reviewed reports.</h2>
+      <div class="figure">
+        <svg viewBox="0 0 1120 470" role="img" aria-label="GUIdebuger workflow">
+          <defs>
+            <marker id="arrow" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto" markerUnits="strokeWidth">
+              <path d="M0,0 L0,6 L8,3 z" fill="#111827"></path>
+            </marker>
+          </defs>
+          <rect class="node" x="18" y="76" width="174" height="74" rx="5"></rect>
+          <text class="svg-label" x="105" y="106" text-anchor="middle">Android app</text>
+          <text class="svg-label" x="105" y="132" text-anchor="middle">ADB / UIA</text>
+
+          <rect class="node" x="264" y="76" width="190" height="74" rx="5"></rect>
+          <text class="svg-label" x="359" y="106" text-anchor="middle">GUI state</text>
+          <text class="svg-label" x="359" y="132" text-anchor="middle">XML + screenshot</text>
+
+          <rect class="node" x="526" y="76" width="210" height="74" rx="5"></rect>
+          <text class="svg-label" x="631" y="106" text-anchor="middle">Narrative memory</text>
+          <text class="svg-label" x="631" y="132" text-anchor="middle">case events</text>
+
+          <rect class="node" x="814" y="76" width="210" height="74" rx="5"></rect>
+          <text class="svg-label" x="919" y="106" text-anchor="middle">Explorer LLM</text>
+          <text class="svg-label" x="919" y="132" text-anchor="middle">action + oracle</text>
+
+          <rect class="node" x="814" y="244" width="210" height="74" rx="5"></rect>
+          <text class="svg-label" x="919" y="274" text-anchor="middle">Action</text>
+          <text class="svg-label" x="919" y="300" text-anchor="middle">execution</text>
+
+          <rect class="node" x="526" y="370" width="210" height="74" rx="5"></rect>
+          <text class="svg-label" x="631" y="400" text-anchor="middle">Supervisor</text>
+          <text class="svg-label" x="631" y="426" text-anchor="middle">chain review</text>
+
+          <rect class="node" x="172" y="370" width="226" height="74" rx="5"></rect>
+          <text class="svg-label" x="285" y="400" text-anchor="middle">Evidence-chain</text>
+          <text class="svg-label" x="285" y="426" text-anchor="middle">BugReport</text>
+
+          <path class="arrow" d="M192 113 L264 113"></path>
+          <text class="svg-label" x="214" y="102">observe</text>
+          <path class="arrow" d="M454 113 L526 113"></path>
+          <text class="svg-label" x="468" y="102">controls</text>
+          <path class="arrow" d="M736 113 L814 113"></path>
+          <text class="svg-label" x="758" y="102">prompt</text>
+          <path class="arrow" d="M919 150 L919 244"></path>
+          <text class="svg-label" x="932" y="195">action JSON</text>
+          <path class="arrow" d="M814 281 L760 281 L760 150"></path>
+          <text class="svg-label" x="704" y="273">feedback</text>
+          <path class="arrow" d="M919 318 L919 342 L48 342 L48 150"></path>
+          <text class="svg-label" x="414" y="333">device operation</text>
+          <path class="arrow dash" d="M359 150 L359 224 L608 224 L608 370"></path>
+          <text class="svg-label" x="386" y="214">XML + screenshot</text>
+          <path class="arrow dash" d="M814 150 L784 150 L784 348 L716 370"></path>
+          <text class="svg-label" x="728" y="198">bug candidate</text>
+          <path class="arrow" d="M526 407 L398 407"></path>
+          <text class="svg-label" x="414" y="396">confirmed evidence</text>
+        </svg>
+        <p class="caption">
+          Deterministic Android automation observes and executes actions; the
+          narrative layer stores case events; the Supervisor reviews the
+          accumulated evidence chain before a report is accepted.
+        </p>
+      </div>
+    </section>
+
+    <section id="artifact-viewer" aria-labelledby="artifacts-title">
+      <p class="kicker">Artifact viewer</p>
+      <h2 id="artifacts-title">Inspectable outputs exposed by the demo.</h2>
+      <div class="grid">
+        <div class="card">
+          <h3>Functional case event log</h3>
+          <p>Records lifecycle role, selected action, observed result, and pending verification target.</p>
+        </div>
+        <div class="card">
+          <h3>Narrative memory</h3>
+          <p>Maintains the active functional story across multiple GUI steps.</p>
+        </div>
+        <div class="card">
+          <h3>Supervisor review</h3>
+          <p>Audits the case event chain and decides bug, no bug, or more verification.</p>
+        </div>
+      </div>
+
+      <div class="event-log" aria-label="sample functional case event log">
+        <div class="event">
+          <strong>start</strong>
+          <span>Open product list and select an item. Expected: product detail page appears.</span>
+        </div>
+        <div class="event">
+          <strong>commit</strong>
+          <span>Tap Add to cart. Expected: the item is saved and cart state changes.</span>
+        </div>
+        <div class="event">
+          <strong>verify</strong>
+          <span>Return to the list and compare badge count with cart contents.</span>
+        </div>
+        <div class="event">
+          <strong>review</strong>
+          <span>Supervisor confirms whether the mismatch is supported by screenshots and UI XML.</span>
+        </div>
+      </div>
+    </section>
+
+    <section aria-labelledby="sample-title">
+      <p class="kicker">Compact sample</p>
+      <h2 id="sample-title">Example Supervisor-reviewed BugReport.</h2>
+      <div class="two">
+        <div>
+          <table class="artifact-table">
+            <thead>
+              <tr>
+                <th>Field</th>
+                <th>Sample value</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>Application</td>
+                <td>DemoShop</td>
+              </tr>
+              <tr>
+                <td>Category</td>
+                <td>cross-page data inconsistency</td>
+              </tr>
+              <tr>
+                <td>Evidence</td>
+                <td>Explorer action, GUI state before/after, screenshot paths, Supervisor decision.</td>
+              </tr>
+              <tr>
+                <td>Supervisor outcome</td>
+                <td>Confirmed: cart badge and cart contents describe inconsistent states.</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <pre>{
+  "bug_id": "BUG-SAMPLE-001",
+  "source": "behavior_chain_review",
+  "case_phase": "verify",
+  "supervisor_verdict": "bug",
+  "evidence": [
+    "functional case event log",
+    "UI XML and screenshots",
+    "Explorer expected result"
+  ]
+}</pre>
+      </div>
+    </section>
+
+    <section id="local-run" aria-labelledby="run-title">
+      <p class="kicker">Local execution</p>
+      <h2 id="run-title">What is needed to run the full tool.</h2>
+      <div class="grid">
+        <div class="card">
+          <h3>Android target</h3>
+          <p>One emulator or physical device with ADB enabled and a target app opened in the foreground.</p>
+        </div>
+        <div class="card">
+          <h3>Python environment</h3>
+          <p>Install the repository requirements and run <code>python main.py</code>.</p>
+        </div>
+        <div class="card">
+          <h3>Model endpoint</h3>
+          <p>Configure an OpenAI-compatible endpoint in <code>.env</code> for Explorer and Supervisor calls.</p>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <p>
+      This page is intended for the ICSME Tool Demonstration submission field
+      "online live version of the tool". It is a static artifact viewer; live
+      Android execution is performed locally from the
+      <a href="https://github.com/Futano/Newdebuger">public repository</a>.
+    </p>
+  </footer>
+</body>
+</html>
